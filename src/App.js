@@ -1,8 +1,10 @@
 import './App.css';
 import Navbarhead from './components/Navbarhead';
-import ProductList from './components/ProductList';
-import { Container, Row } from 'react-bootstrap';
-import product from './data/product.json'
+// import ProductList from './components/ProductList';
+// import { Container, Row } from 'react-bootstrap';
+// import product from './data/product.json'
+// import Signup from './components/Signup';
+// import Login from './components/Login';
 function App() {
   
   
@@ -10,17 +12,7 @@ function App() {
     
     <>
       <Navbarhead />
-      <br/> 
-      <br/> 
-      <br/>      
-      <Container>
-      <h2>Product List</h2>
-      <br/>
-      <Row>
-        <ProductList product={product}/>
-      </Row>
-        
-      </Container>
+      
     </>
   );
 }
