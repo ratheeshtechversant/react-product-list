@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Container } from 'react-bootstrap'
 import axios from 'axios'
 import { useCookies } from 'react-cookie';
@@ -8,7 +8,7 @@ const Login = () => {
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
-
+    const [user1,setUser] = useState("")
     function LogIn(){
        
         axios.post('http://localhost:3000/users/sign_in',
@@ -19,22 +19,27 @@ const Login = () => {
         }
         ).then(result => {
             window.alert("Email : "+ result.data.user.email)
-            console.log(result)
-            setCookie('user',[ result.data.user,result.headers.authorization], { path: '/' })
-            console.log(cookies)
+            setUser(result.data)
             
         })
         .catch(error => {
             window.alert(error.response.data.error)
             console.log(error)
         })
-    }
 
+    }
+    function Show(){
+      // window.alert(user1.image_url.image_url)
+      document.getElementById('email').innerHTML = user1.image_url.email
+      document.getElementById('img').src = user1.image_url.image_url
+
+    }
   return (
     <Container>
         <div>
         <br/><br/><br/><br/>
       </div>
+      
       <div className='col-sm-4 offset-sm-3'>
         <h3>Sign In</h3>
         <div className="mb-3">
@@ -82,6 +87,13 @@ const Login = () => {
       
           <h6>
           </h6>
+          <button type="submit" className="btn btn-primary"
+          onClick={Show}>
+            show User
+          </button>
+          <div><h4 id='email'></h4>
+          <img id='img' src='' style={{height: '17rem', width: '14rem'}}/>
+          </div>
     </Container>
   )
 }
