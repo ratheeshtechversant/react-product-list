@@ -4,6 +4,7 @@ import {Routes, Route, Link } from 'react-router-dom';
 import Login from './Login';
 import ProductList from './ProductList';
 import Signup from './Signup';
+import AddProduct from './AddProduct';
 
 const Navbarhead = () => {
   
@@ -20,6 +21,7 @@ const Navbarhead = () => {
             navbarScroll
           >
             <Link to="/" className='nav-link'>Home</Link>
+            <Link to="addproduct" className='nav-link'>AddProduct</Link>
             
           </Nav> 
           {/* <Form className="d-flex"> */}
@@ -35,6 +37,7 @@ const Navbarhead = () => {
       <Route path="/" element={<ProductList />} />
       <Route path="signup" element={<Signup />} />
       <Route path="login" element={<Login />} />
+      <Route path="addproduct" element={<AddProduct />} />
     </Routes>
 </>
   );

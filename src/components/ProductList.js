@@ -26,15 +26,15 @@ const ProductList = ({product}) => {
           {
 
           products.map((products) => (
-            <div className='col-xl-3 col-lg-4 col-md-6 col-sm-12' key={products.id}>
-            <Card className='mb-3 shadow p-3 mb-5 bg-body rounded' style={{ height: '13rem' }}>
-                {/* <Card.Img variant="top" src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg" /> */}
+            <div className='col-xl-3 col-lg-4 col-md-6 col-sm-12' key={products.attributes.id}>
+            <Card className='mb-3 shadow p-3 mb-5 bg-body rounded' style={{ height: '20rem' }}>
+                <Card.Img variant="top" src={products.attributes.image_url} style={{ height: '10rem', width: '14rem' }}/>
                 <Card.Body>
-                    <Card.Title className='text-success'>{products.name}</Card.Title>
+                    <Card.Title className='text-success'>{products.attributes.name}</Card.Title>
                     
-                    <Card.Text>Price:{products.price}
+                    <Card.Text>Price:{products.attributes.price}
                     </Card.Text>
-                    <Card.Text>Rating:{products.rating}
+                    <Card.Text>Rating:{products.attributes.rating}
                     </Card.Text>
                 </Card.Body>
             </Card> 
