@@ -2,8 +2,10 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import AddItems from './AddItems'
 const BuyNow = ({product}) => {
-    product['type'] = 'buynow'
-    console.log(product)
+  const prod = {}
+  prod['type'] = 'addcart'
+  prod['pid'] = product
+  console.log(product)
   return (
     <>
       <div>
@@ -14,7 +16,7 @@ const BuyNow = ({product}) => {
       </div>
       <Container>
       <h2>Buy Now</h2>
-        <AddItems product={product}/>
+        <AddItems product={prod}/>
       </Container>
       </>
   )

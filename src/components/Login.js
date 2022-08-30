@@ -1,8 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import { Container } from 'react-bootstrap'
 import axios from 'axios'
+import { Link,Outlet,useNavigate } from "react-router-dom";
 
 const Login = ({getUser}) => {
+    let navigate = useNavigate();
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     function LogIn(){
@@ -17,7 +19,7 @@ const Login = ({getUser}) => {
             window.alert("Email : "+ result.data.user.email)
             getUser(result.data.image_url.id,result.data.image_url.email,
               result.headers.authorization,result.data.image_url.image_url)
-            // console.log(result.headers.authorization)
+            navigate("/")
             
         })
         .catch(error => {
@@ -32,7 +34,7 @@ const Login = ({getUser}) => {
         <div>
         <br/><br/><br/><br/>
       </div>
-      
+      {/* <Outlet /> */}
       <div className='col-sm-4 offset-sm-3'>
         <h3>Sign In</h3>
         <div className="mb-3">
@@ -76,10 +78,11 @@ const Login = ({getUser}) => {
         <p className="forgot-password text-right">
           Forgot <a href="#">password?</a>
         </p>
+
+        
       </div>
       
-          <h6>
-          </h6>
+      
 
     </Container>
   )

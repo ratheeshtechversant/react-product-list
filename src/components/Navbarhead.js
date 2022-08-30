@@ -15,6 +15,7 @@ import BuyNow from "./BuyNow";
 const Navbarhead = () => {
   const [product, setProduct] = useState([]);
 
+  const [pid, setPid] = useState();
   const [uid, setUid] = useState("");
   const [email, setEmail] = useState("");
   const [authorization, setAuthentication] = useState("");
@@ -36,11 +37,10 @@ const Navbarhead = () => {
     );
   };
 
-  const getUid = (uid) => {
-    fetch("http://127.0.0.1:3000/api/products/" + uid)
-      .then((response) => response.json())
-      .then((product) => setProduct(product));
-  };
+  function getUid(pid) {
+    setPid(pid);
+  }
+
   const user = Cookies.get("user") ? JSON.parse(Cookies.get("user")) : "";
 
   function Logout() {
@@ -57,12 +57,19 @@ const Navbarhead = () => {
     <>
       <Navbar fixed="top" bg="dark" variant="dark">
         <Container fluid>
-          <Navbar.Brand href="#">
-            <div className="logo-image">
-              <img src={user.image_url} className="img-fluid" />
-            </div>
-          </Navbar.Brand>
-          <Navbar.Brand>{user.email}</Navbar.Brand>
+          {Cookies.get("user") ? (
+            <>
+              <Navbar.Brand href="#">
+                <div className="logo-image">
+                  <img src={user.image_url} className="img-fluid" />
+                </div>
+              </Navbar.Brand>
+              <Navbar.Brand>{user.email}</Navbar.Brand>
+            </>
+          ) : (
+            <Navbar.Brand>user</Navbar.Brand>
+          )}
+
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -73,17 +80,22 @@ const Navbarhead = () => {
               <Link to="/" className="nav-link">
                 Home
               </Link>
-              <Link to="orderitems" className="nav-link">
+              {Cookies.get("user") ? (
+                <Link to="orderitems" className="nav-link">
+                  My Order
+                </Link>
+              ) : (
+                ""
+              )}
+              {/* <Link to="orderitems" className="nav-link">
                 My Order
-              </Link>
+              </Link> */}
 
               {/* <Link to="addproduct" className="nav-link">
                 AddProduct
               </Link> */}
             </Nav>
-            <Link to="cartitem" className="btn btn-primary">
-              Cart
-            </Link>
+
             <Form className="d-flex">
               &nbsp;
               {/* <Link to="signup" className="btn btn-primary">
@@ -91,13 +103,25 @@ const Navbarhead = () => {
               </Link>
               &nbsp; */}
               {Cookies.get("user") ? (
-                <button className="btn btn-primary" onClick={Logout}>
-                  Logout
-                </button>
+                <>
+                  <Link to="cartitem" className="btn btn-primary">
+                    Cart
+                  </Link>
+                  &nbsp;
+                  <button className="btn btn-primary" onClick={Logout}>
+                    Logout
+                  </button>
+                </>
               ) : (
-                <Link to="login" className="btn btn-primary">
-                  Login
-                </Link>
+                <>
+                  <Link to="signup" className="btn btn-primary">
+                    Sign-up
+                  </Link>
+                  &nbsp;
+                  <Link to="login" className="btn btn-primary">
+                    Login
+                  </Link>
+                </>
               )}
             </Form>
           </Navbar.Collapse>
@@ -106,10 +130,10 @@ const Navbarhead = () => {
 
       <Routes>
         <Route path="/" element={<ProductList getUid={getUid} />} />
-        <Route path="addtocart" element={<AddToCart product={product} />} />
-        <Route path="buynow" element={<BuyNow product={product} />} />
+        <Route path="addtocart" element={<AddToCart product={pid} />} />
+        <Route path="buynow" element={<BuyNow product={pid} />} />
+        <Route path="login" element={<Login getUser={getUser} />}></Route>
         <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login getUser={getUser} />} />
         <Route path="addproduct" element={<AddProduct />} />
         <Route path="cartitem" element={<CartItems />} />
         <Route path="orderitems" element={<OrderItems />} />
