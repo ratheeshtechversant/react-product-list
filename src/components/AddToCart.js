@@ -2,7 +2,9 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import AddItems from './AddItems'
 const AddToCart = ({product}) => {
-    product['type'] = 'addcart'
+  const prod = {}
+    prod['type'] = 'addcart'
+    prod['pid'] = product
     console.log(product)
   return (
     <>
@@ -15,7 +17,7 @@ const AddToCart = ({product}) => {
       <Container>
       <h2>Add to Cart</h2>
 
-          <AddItems product={product}/>
+          <AddItems product={prod}/>
       </Container>
       </>
   )

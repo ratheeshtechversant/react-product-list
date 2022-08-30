@@ -1,8 +1,20 @@
-import React from 'react'
-import { Card, Container, Row, Button } from "react-bootstrap";
+import React from "react";
+import { Card, Container, Row, Button, CardGroup } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const CartItems = () => {
-    const products = []
+  const [carts, setCarts] = useState([]);
+  useEffect(() => {
+    fetch("http://127.0.0.1:3000/api/cart_items", {
+      method: "GET",
+      headers: {
+        Authorization: JSON.parse(Cookies.get("user")).authorization,
+      },
+    })
+      .then((response) => response.json())
+      .then((carts) => setCarts(carts));
+  }, []);
   return (
     <>
       <div>
@@ -15,10 +27,10 @@ const CartItems = () => {
         <h2>My Cart</h2>
         <br />
         <Row>
-          {products.map((products) => (
+          {carts.map((carts) => (
             <div
               className="col-xl-3 col-lg-4 col-md-6 col-sm-12"
-              key=''
+              key={carts.id}
             >
               <Card
                 className="mb-3 shadow p-3 mb-5 bg-body rounded"
@@ -26,21 +38,18 @@ const CartItems = () => {
               >
                 <Card.Img
                   variant="top"
-                  src=''
+                  src=""
                   style={{ height: "10rem", width: "14rem" }}
                 />
                 <Card.Body>
-                  <Card.Title className="text-success">
-                    Name
-                  </Card.Title>
-
-                  <Card.Text>Price:{}</Card.Text>
-                  <Card.Text>Rating:{}</Card.Text>
-                  <Card.Text>Count:{}</Card.Text>
-
+                  <Card.Title className="text-success">{carts.name}</Card.Title>
+                  <Card.Text>Price:{carts.price}</Card.Text>
+                  <Card.Text>
+                    Quantity:{carts.quantity}
+                    {carts.weight_type}
+                  </Card.Text>
                   <Button variant="primary">Edit</Button>&nbsp;
                   <Button variant="primary">Delete</Button>
-
                 </Card.Body>
               </Card>
             </div>
@@ -48,7 +57,7 @@ const CartItems = () => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default CartItems
+export default CartItems;
