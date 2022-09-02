@@ -1,11 +1,15 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
 import AddItems from './AddItems'
-const BuyNow = ({product}) => {
-  const prod = {}
-  prod['type'] = 'buynow'
-  prod['pid'] = product
-  console.log(product)
+import { useLocation } from 'react-router-dom'
+
+const EditCart = () => {
+    const location = useLocation();
+    const prod = {}
+  prod['type'] = 'editcart'
+  prod['pid'] = location.state.pid
+  prod['id'] = location.state.id
+  console.log(prod)
   return (
     <>
       <div>
@@ -15,11 +19,11 @@ const BuyNow = ({product}) => {
         <br />
       </div>
       <Container>
-      <h2>Buy Now</h2>
+      <h2>Edit Cart</h2>
         <AddItems product={prod}/>
       </Container>
       </>
   )
 }
 
-export default BuyNow
+export default EditCart
