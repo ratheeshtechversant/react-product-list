@@ -1,7 +1,7 @@
 import "./Navbarhead.css";
 import React, { useState } from "react";
 import { Navbar, Nav, Container, Form } from "react-bootstrap";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import ProductList from "./ProductList";
 import Signup from "./Signup";
@@ -11,8 +11,13 @@ import CartItems from "./CartItems";
 import OrderItems from "./OrderItems";
 import AddToCart from "./AddToCart";
 import BuyNow from "./BuyNow";
+import EditCart from "./EditCart";
+import Checkout from "./Checkout";
+import OrderDetails from "./OrderDetails";
+import BuyNowPreview from "./BuyNowPreview";
 
 const Navbarhead = () => {
+  let navigate = useNavigate()
   const [product, setProduct] = useState([]);
 
   const [pid, setPid] = useState();
@@ -51,7 +56,7 @@ const Navbarhead = () => {
       },
     })
       .then((response) => response.json())
-      .then(Cookies.remove("user"));
+      .then(!Cookies.remove("user") ? navigate("/") : window.alert("sign-out faild"));
   }
   return (
     <>
@@ -132,11 +137,17 @@ const Navbarhead = () => {
         <Route path="/" element={<ProductList getUid={getUid} />} />
         <Route path="addtocart" element={<AddToCart product={pid} />} />
         <Route path="buynow" element={<BuyNow product={pid} />} />
+        <Route path="editcart" element={<EditCart />} />
+        <Route path="orderdetails" element={<OrderDetails />} />
+        <Route path="buynowpreview" element={<BuyNowPreview />} />
+
         <Route path="login" element={<Login getUser={getUser} />}></Route>
         <Route path="signup" element={<Signup />} />
         <Route path="addproduct" element={<AddProduct />} />
         <Route path="cartitem" element={<CartItems />} />
         <Route path="orderitems" element={<OrderItems />} />
+        <Route path="checkout" element={<Checkout />} />
+
       </Routes>
     </>
   );

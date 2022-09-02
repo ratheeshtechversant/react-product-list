@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Row, Button } from "react-bootstrap";
+import { Container, Card, Row } from "react-bootstrap";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -38,17 +38,55 @@ const AddItems = ({ product }) => {
     if (product.type == "addcart") {
       submitToCartAPI(data, data1);
     }
+    if(product.type == "editcart"){
+      submitToUpdateCartAPI(product.id,data1);
+    }
+    if(product.type == "buynow"){
+      navigate("/buynowpreview",{state: {
+        id:prod.id,
+        name: prod.name,
+        price: prod.price,
+        quantity: event.target.quantity.value,
+        weight_type: weight_type
+
+      }})
+    }
+    
   }
+  
+  // update cart
+  function submitToUpdateCartAPI(id,data1){
+    fetch("http://127.0.0.1:3000/api/cart_items/"+id,{
+      method: "PATCH",
+      headers: {
+        Authorization: JSON.parse(Cookies.get("user")).authorization,
+      },
+      body: data1
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        window.alert(data.message)
+        if(data.message == "cart item updated"){
+            navigate("/cartitem")
+        }
+      });
+  }
+  // check/create/get cart 
+
   function submitToCartAPI(data, data1) {
     fetch("http://127.0.0.1:3000/api/carts", {
       method: "POST",
-      body: data,
+      headers: {
+        Authorization: JSON.parse(Cookies.get("user")).authorization,
+      },
+      body: data
     })
       .then((response) => response.json())
       .then((data) => submitToCartItemAPI(data, data1))
       .catch((error) => console.error(error));
   }
 
+  // insert cart items
   function submitToCartItemAPI(data, data1) {
     data1.append("cart_items[cart_id]", data.id);
     // console.log(data1)
@@ -125,11 +163,13 @@ const AddItems = ({ product }) => {
                   <button type="submit" className="btn btn-primary">
                     BuyNow
                   </button>
-                ) : (
-                  <button type="addtocart" className="btn btn-primary">
+                ) : product.type == "addcart" ? (
+                  <button type="submit" className="btn btn-primary">
                     AddCart
                   </button>
-                )}
+                ) : <button type="submit" className="btn btn-primary">
+                update
+              </button>}
               </Card.Body>
             </Card>
           </div>
